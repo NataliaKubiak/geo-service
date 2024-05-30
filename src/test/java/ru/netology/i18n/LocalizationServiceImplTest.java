@@ -11,15 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LocalizationServiceImplTest {
 
-    @ParameterizedTest
-    @MethodSource("greetings_string_locale_params")
-    public void greetings_string_locale_test(Country country, String expectedGreetings) {
-        LocalizationServiceImpl localizationService = new LocalizationServiceImpl();
-        String actualGreetings = localizationService.locale(country);
-
-        assertEquals(expectedGreetings, actualGreetings);
-    }
-
     private static Stream<Arguments> greetings_string_locale_params() {
         return Stream.of(
                 Arguments.of(Country.RUSSIA, "Добро пожаловать"),
@@ -27,5 +18,14 @@ public class LocalizationServiceImplTest {
                 Arguments.of(Country.BRAZIL, "Welcome"),
                 Arguments.of(Country.GERMANY, "Welcome")
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("greetings_string_locale_params")
+    public void greetings_string_locale_test(Country country, String expectedGreetings) {
+        LocalizationServiceImpl localizationService = new LocalizationServiceImpl();
+        String actualGreetings = localizationService.locale(country);
+
+        assertEquals(expectedGreetings, actualGreetings);
     }
 }

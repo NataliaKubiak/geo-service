@@ -18,15 +18,6 @@ public class GeoServiceImplTest {
         assertThrows(RuntimeException.class, () -> geoService.byCoordinates(48.8584, 2.2945));
     }
 
-    @ParameterizedTest
-    @MethodSource("location_buIp_Params")
-    public void location_byIp_test(Location expectedLocation, String passingIP) {
-        GeoServiceImpl geoService = new GeoServiceImpl();
-        Location actualLocation = geoService.byIp(passingIP);
-
-        assertEquals(expectedLocation, actualLocation);
-    }
-
     //нормально ли написать через массив объектов? если нет - подскажите как лучше было бы написать и почему? :)
     //спасибо *^_^*
     private static Object[][] location_buIp_Params() {
@@ -38,5 +29,14 @@ public class GeoServiceImplTest {
                 {new Location("New York", Country.USA, null, 0), "96.0.0.1"},
                 {null, "0"}
         };
+    }
+
+    @ParameterizedTest
+    @MethodSource("location_buIp_Params")
+    public void location_byIp_test(Location expectedLocation, String passingIP) {
+        GeoServiceImpl geoService = new GeoServiceImpl();
+        Location actualLocation = geoService.byIp(passingIP);
+
+        assertEquals(expectedLocation, actualLocation);
     }
 }
