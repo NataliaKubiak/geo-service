@@ -1,3 +1,3 @@
 # Сервис отправки локализованных сообщений
 
-В классе Main, создается тестовая отправка сообщения в консоль
+[Задание](https://github.com/netology-code/jd-homeworks/blob/master/mocks/task1/README.md)
