@@ -2,6 +2,7 @@ package ru.netology.geo;
 
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.netology.entity.Country;
 import ru.netology.entity.Location;
@@ -18,9 +19,7 @@ public class GeoServiceImplTest {
         assertThrows(RuntimeException.class, () -> geoService.byCoordinates(48.8584, 2.2945));
     }
 
-    //нормально ли написать через массив объектов? если нет - подскажите как лучше было бы написать и почему? :)
-    //спасибо *^_^*
-    private static Object[][] location_buIp_Params() {
+    private static Object[][] byIp_Params() {
         return new Object[][]{
                 {new Location(null, null, null, 0), "127.0.0.1"},
                 {new Location("Moscow", Country.RUSSIA, "Lenina", 15), "172.0.32.11"},
@@ -32,11 +31,29 @@ public class GeoServiceImplTest {
     }
 
     @ParameterizedTest
-    @MethodSource("location_buIp_Params")
-    public void location_byIp_test(Location expectedLocation, String passingIP) {
+    @MethodSource("byIp_Params")
+    public void byIp_test(Location expectedLocation, String passingIP) {
         GeoServiceImpl geoService = new GeoServiceImpl();
         Location actualLocation = geoService.byIp(passingIP);
 
         assertEquals(expectedLocation, actualLocation);
+    }
+
+    //переписанный тест с параметрами в том же месте, что и тест :)
+    @ParameterizedTest
+    @CsvSource({
+            " , , , 0, 127.0.0.1",
+            "Moscow, RUSSIA, Lenina, 15, 172.0.32.11",
+            "New York, USA, ' 10th Avenue', 32, 96.44.183.149",
+            "Moscow, RUSSIA, , 0, 172.0.2.0",
+            "New York, USA, , 0, 96.0.0.1",
+    })
+    public void byIp_test(String city, Country country, String street, int building, String passingIP) {
+        Location location = new Location(city, country, street, building);
+
+        GeoServiceImpl geoService = new GeoServiceImpl();
+        Location actualLocation = geoService.byIp(passingIP);
+
+        assertEquals(location, actualLocation);
     }
 }
